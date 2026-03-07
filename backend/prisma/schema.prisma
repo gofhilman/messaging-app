@@ -14,55 +14,44 @@ datasource db {
 }
 
 model User {
-  id         String      @id @default(uuid())
-  username   String      @unique
-  password   String
-  name       String
-  picture    String      @default("https://res.cloudinary.com/dwyzndpyq/image/upload/v1772863199/customer-100_sld3om.png")
-  online     Boolean     @default(false)
-  chats      Chat[]
-  groupChats GroupChat[]
-  texts      Text[]
-  images     Image[]
+  id       String    @id @default(uuid())
+  username String    @unique
+  password String
+  name     String
+  picture  String    @default("https://res.cloudinary.com/dwyzndpyq/image/upload/v1772863199/customer-100_sld3om.png")
+  online   Boolean   @default(false)
+  chats    Chat[]
+  messages Message[]
 }
 
 model Chat {
   id            String    @id @default(uuid())
   lastMessageAt DateTime?
+  name          String?
+  read          Boolean   @default(true)
+  type          ChatType
   users         User[]
-  texts         Text[]
-  images        Image[]
+  messages      Message[]
 }
 
-model GroupChat {
-  id            String    @id @default(uuid())
-  name          String
-  lastMessageAt DateTime?
-  users         User[]
-  texts         Text[]
-  images        Image[]
+model Message {
+  id        String      @id @default(uuid())
+  createdAt DateTime
+  chat      Chat?       @relation(fields: [chatId], references: [id])
+  chatId    String?
+  user      User        @relation(fields: [userId], references: [id])
+  userId    String
+  type      MessageType
+  text      String?
+  image     String?
 }
 
-model Text {
-  id          String     @id @default(uuid())
-  createdAt   DateTime
-  chat        Chat?      @relation(fields: [chatId], references: [id])
-  chatId      String?
-  groupchat   GroupChat? @relation(fields: [groupChatId], references: [id])
-  groupChatId String?
-  user        User       @relation(fields: [userId], references: [id])
-  userId      String
-  content     String
+enum ChatType {
+  PRIVATE
+  GROUP
 }
 
-model Image {
-  id          String     @id @default(uuid())
-  createdAt   DateTime
-  chat        Chat?      @relation(fields: [chatId], references: [id])
-  chatId      String?
-  groupchat   GroupChat? @relation(fields: [groupChatId], references: [id])
-  groupChatId String?
-  user        User       @relation(fields: [userId], references: [id])
-  userId      String
-  url         String
+enum MessageType {
+  TEXT
+  IMAGE
 }
