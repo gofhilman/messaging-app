@@ -64,6 +64,13 @@ const validateSignup: any = [
       }
       return true;
     }),
+  body("name")
+    .trim()
+    .notEmpty()
+    .withMessage(
+      "Darling, we need a name that turns heads. " +
+        "This isn't the time for mystery, serve us your spotlight moment!",
+    ),
 ];
 
 for (const validator of [validateLogin, validateSignup]) {
