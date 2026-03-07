@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id         String      @id @default(uuid())
+  username   String      @unique
+  password   String
+  name       String
+  picture    String      @default("https://res.cloudinary.com/dwyzndpyq/image/upload/v1772863199/customer-100_sld3om.png")
+  online     Boolean     @default(false)
+  chats      Chat[]
+  groupChats GroupChat[]
+  texts      Text[]
+  images     Image[]
+}
+
+model Chat {
+  id            String    @id @default(uuid())
+  lastMessageAt DateTime?
+  users         User[]
+  texts         Text[]
+  images        Image[]
+}
+
+model GroupChat {
+  id            String    @id @default(uuid())
+  name          String
+  lastMessageAt DateTime?
+  users         User[]
+  texts         Text[]
+  images        Image[]
+}
+
+model Text {
+  id          String     @id @default(uuid())
+  createdAt   DateTime
+  chat        Chat?      @relation(fields: [chatId], references: [id])
+  chatId      String?
+  groupchat   GroupChat? @relation(fields: [groupChatId], references: [id])
+  groupChatId String?
+  user        User       @relation(fields: [userId], references: [id])
+  userId      String
+  content     String
+}
+
+model Image {
+  id          String     @id @default(uuid())
+  createdAt   DateTime
+  chat        Chat?      @relation(fields: [chatId], references: [id])
+  chatId      String?
+  groupchat   GroupChat? @relation(fields: [groupChatId], references: [id])
+  groupChatId String?
+  user        User       @relation(fields: [userId], references: [id])
+  userId      String
+  url         String
+}
