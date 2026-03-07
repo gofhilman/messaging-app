@@ -7,7 +7,7 @@
     "start": "tsx app.ts",
     "dev": "tsx watch app.ts",
     "data": "prisma studio --browser none",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate --sql"
   },
   "keywords": [],
   "author": "",

@@ -73,8 +73,40 @@ const validateSignup: any = [
     ),
 ];
 
-for (const validator of [validateLogin, validateSignup]) {
+const validateChat: any = [
+  body("type")
+    .isIn(["PRIVATE", "GROUP"])
+    .withMessage(
+      "Darling, your chat type must be either PRIVATE or GROUP. " +
+        "No improvising, we don't do freestyle here!",
+    ),
+  body("userIds")
+    .optional()
+    .isArray({ min: 1 })
+    .withMessage(
+      "A chat with nobody? Thats just talking to yourself, " +
+        "sweetheart. Add somebody!",
+    ),
+  body("name")
+    .if(body("type").equals("GROUP"))
+    .trim()
+    .notEmpty()
+    .withMessage(
+      "Group chats need a name that slaps, sparkles, and screams squad goals. " +
+        "Don't leave us hanging!",
+    ),
+  body("name")
+    .if(body("type").equals("PRIVATE"))
+    .not()
+    .exists()
+    .withMessage(
+      "Private chats are meant to stay nameless, darling. " +
+        "No labels, no titles, just pure mystery.",
+    ),
+];
+
+for (const validator of [validateLogin, validateSignup, validateChat]) {
   validator.push(handleValidation);
 }
 
-export { validateLogin, validateSignup };
+export { validateLogin, validateSignup, validateChat };
