@@ -105,8 +105,20 @@ const validateChat: any = [
     ),
 ];
 
-for (const validator of [validateLogin, validateSignup, validateChat]) {
+const validateText: any = [
+  body("text")
+    .trim()
+    .notEmpty()
+    .withMessage("No ghosting allowed, say something!"),
+];
+
+for (const validator of [
+  validateLogin,
+  validateSignup,
+  validateChat,
+  validateText,
+]) {
   validator.push(handleValidation);
 }
 
-export { validateLogin, validateSignup, validateChat };
+export { validateLogin, validateSignup, validateChat, validateText };

@@ -4,7 +4,6 @@ import express from "express";
 import cors from "cors";
 import authRouter from "./routes/authRouter";
 import chatsRouter from "./routes/chatsRouter";
-// import messagesRouter from "./routes/messagesRouter";
 // import usersRouter from "./routes/usersRouter";
 
 const app = express();
@@ -15,7 +14,6 @@ app.use(cors());
 
 app.use("/auth", authRouter);
 app.use("/chats", chatsRouter);
-// app.use("/messages", messagesRouter);
 // app.use("/users", usersRouter);
 
 app.use((err: any, req: any, res: any, next: any) => {

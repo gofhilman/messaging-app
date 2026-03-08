@@ -1,5 +1,6 @@
 import { findChatByUsers } from "../generated/prisma/sql";
 import { prisma } from "../lib/prisma";
+import { v2 as cloudinary } from "cloudinary";
 
 async function chatsGet(req: any, res: any) {
   const chats = await prisma.chat.findMany({
@@ -99,6 +100,33 @@ async function chatPost(req: any, res: any) {
   res.json({ chat });
 }
 
+async function textPost(req: any, res: any) {
+  const message = await prisma.message.create({
+    data: {
+      type: "TEXT",
+      text: req.body.text,
+      chatId: req.params.chatId,
+      userId: req.user.id,
+    },
+  });
+  res.json({ message });
+}
+
+async function imagePost(req: any, res: any) {
+  const file = await cloudinary.uploader.upload(req.file.buffer, {
+    asset_folder: "messaging_app",
+  });
+  const message = await prisma.message.create({
+    data: {
+      type: "IMAGE",
+      image: file.secure_url,
+      chatId: req.params.chatId,
+      userId: req.user.id,
+    },
+  });
+  res.json({ message });
+}
+
 async function chatNamePatch(req: any, res: any) {
   const chat = await prisma.chat.update({
     where: { id: req.params.chatId },
@@ -107,4 +135,12 @@ async function chatNamePatch(req: any, res: any) {
   res.json({ chat });
 }
 
-export { chatsGet, globalChatGet, specificChatGet, chatPost, chatNamePatch };
+export {
+  chatsGet,
+  globalChatGet,
+  specificChatGet,
+  chatPost,
+  textPost,
+  imagePost,
+  chatNamePatch,
+};
