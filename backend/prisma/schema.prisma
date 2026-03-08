@@ -48,6 +48,7 @@ model Message {
 }
 
 enum ChatType {
+  GLOBAL
   PRIVATE
   GROUP
 }

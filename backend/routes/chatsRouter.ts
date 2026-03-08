@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { userAuth } from "../middleware/auth";
+import { auth, userAuth } from "../middleware/auth";
 import {
   chatNamePatch,
   chatPost,
   chatsGet,
+  globalChatGet,
   specificChatGet,
 } from "../controllers/chatsController";
 import { validateChat } from "../middleware/validators";
@@ -11,6 +12,7 @@ import { validateChat } from "../middleware/validators";
 const chatsRouter = Router();
 
 chatsRouter.get("/", userAuth, chatsGet);
+chatsRouter.get("/global", globalChatGet);
 chatsRouter.get("/:chatId", userAuth, specificChatGet);
 chatsRouter.post("/", userAuth, validateChat, chatPost);
 chatsRouter.patch("/:chatId/name", userAuth, validateChat, chatNamePatch);

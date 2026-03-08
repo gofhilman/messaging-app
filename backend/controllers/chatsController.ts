@@ -1,4 +1,3 @@
-import { AppError } from "../errors/AppError";
 import { findChatByUsers } from "../generated/prisma/sql";
 import { prisma } from "../lib/prisma";
 
@@ -16,6 +15,30 @@ async function chatsGet(req: any, res: any) {
     },
   });
   res.json({ chats });
+}
+
+async function globalChatGet(req: any, res: any) {
+  const select = {
+    username: true,
+    name: true,
+    picture: true,
+    online: true,
+  };
+  const chat = await prisma.chat.findFirst({
+    include: {
+      users: { select },
+      messages: {
+        orderBy: { createdAt: "desc" },
+        include: {
+          user: { select },
+        },
+      },
+    },
+    where: {
+      type: "GLOBAL",
+    },
+  });
+  res.json({ chat });
 }
 
 async function specificChatGet(req: any, res: any) {
@@ -84,4 +107,4 @@ async function chatNamePatch(req: any, res: any) {
   res.json({ chat });
 }
 
-export { chatsGet, specificChatGet, chatPost, chatNamePatch };
+export { chatsGet, globalChatGet, specificChatGet, chatPost, chatNamePatch };
