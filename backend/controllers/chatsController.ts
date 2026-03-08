@@ -20,6 +20,7 @@ async function chatsGet(req: any, res: any) {
 
 async function globalChatGet(req: any, res: any) {
   const select = {
+    id: true,
     username: true,
     picture: true,
     online: true,
@@ -43,6 +44,7 @@ async function globalChatGet(req: any, res: any) {
 
 async function specificChatGet(req: any, res: any) {
   const select = {
+    id: true,
     username: true,
     picture: true,
     online: true,

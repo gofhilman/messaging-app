@@ -1,15 +1,17 @@
 import { Router } from "express";
 import {
+  specificUserGet,
   userOnlinePatch,
   userPicturePatch,
   usersGet,
 } from "../controllers/usersController";
-import { userAuth } from "../middleware/auth";
+import { auth, userAuth } from "../middleware/auth";
 import { imageUpload } from "../middleware/imageUpload";
 
 const usersRouter = Router();
 
 usersRouter.get("/", usersGet);
+usersRouter.get("/:userId", auth, specificUserGet);
 usersRouter.patch("/me/picture", userAuth, imageUpload, userPicturePatch);
 usersRouter.patch("/me/online", userAuth, userOnlinePatch);
 

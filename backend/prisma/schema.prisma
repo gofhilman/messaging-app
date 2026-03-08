@@ -15,14 +15,15 @@ datasource db {
 }
 
 model User {
-  id       String    @id @default(uuid())
-  username String    @unique
-  password String
-  picture  String    @default("https://res.cloudinary.com/dwyzndpyq/image/upload/v1772863199/customer-100_sld3om.png")
-  online   Boolean   @default(false)
-  chats    Chat[]
-  reads    Read[]
-  messages Message[]
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  username  String    @unique
+  password  String
+  picture   String    @default("https://res.cloudinary.com/dwyzndpyq/image/upload/v1772863199/customer-100_sld3om.png")
+  online    Boolean   @default(false)
+  chats     Chat[]
+  reads     Read[]
+  messages  Message[]
 }
 
 model Chat {
