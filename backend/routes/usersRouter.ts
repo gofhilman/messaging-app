@@ -5,13 +5,13 @@ import {
   userPicturePatch,
   usersGet,
 } from "../controllers/usersController";
-import { auth, userAuth } from "../middleware/auth";
+import { userAuth } from "../middleware/auth";
 import { imageUpload } from "../middleware/imageUpload";
 
 const usersRouter = Router();
 
 usersRouter.get("/", usersGet);
-usersRouter.get("/:userId", auth, specificUserGet);
+usersRouter.get("/:userId", specificUserGet);
 usersRouter.patch("/me/picture", userAuth, imageUpload, userPicturePatch);
 usersRouter.patch("/me/online", userAuth, userOnlinePatch);
 

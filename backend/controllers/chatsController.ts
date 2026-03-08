@@ -3,10 +3,24 @@ import { prisma } from "../lib/prisma";
 import { v2 as cloudinary } from "cloudinary";
 
 async function chatsGet(req: any, res: any) {
+  const users = {
+    select: {
+      id: true,
+      username: true,
+      picture: true,
+      online: true,
+    },
+  };
   const chats = await prisma.chat.findMany({
     orderBy: { lastMessageAt: "desc" },
     include: {
+      users,
       messages: true,
+      read: {
+        include: {
+          users,
+        },
+      },
     },
     where: {
       users: {
@@ -123,7 +137,9 @@ async function textPost(req: any, res: any) {
 }
 
 async function imagePost(req: any, res: any) {
-  const file = await cloudinary.uploader.upload(req.file.buffer, {
+  const base64 = req.file.buffer.toString("base64");
+  const fileUri = `data:${req.file.mimetype};base64,${base64}`;
+  const file = await cloudinary.uploader.upload(fileUri, {
     asset_folder: "messaging_app",
   });
   const message = await prisma.message.create({
