@@ -21,6 +21,7 @@ model User {
   picture  String    @default("https://res.cloudinary.com/dwyzndpyq/image/upload/v1772863199/customer-100_sld3om.png")
   online   Boolean   @default(false)
   chats    Chat[]
+  reads    Read[]
   messages Message[]
 }
 
@@ -28,10 +29,17 @@ model Chat {
   id            String    @id @default(uuid())
   lastMessageAt DateTime?
   name          String?
-  read          Boolean   @default(true)
+  read          Read?
   type          ChatType
   users         User[]
   messages      Message[]
+}
+
+model Read {
+  id     String @id @default(uuid())
+  chat   Chat   @relation(fields: [chatId], references: [id])
+  chatId String @unique
+  users  User[]
 }
 
 model Message {

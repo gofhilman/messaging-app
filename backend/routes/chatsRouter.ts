@@ -3,6 +3,7 @@ import { userAuth } from "../middleware/auth";
 import {
   chatNamePatch,
   chatPost,
+  chatReadPatch,
   chatsGet,
   globalChatGet,
   imagePost,
@@ -21,5 +22,6 @@ chatsRouter.post("/", userAuth, validateChat, chatPost);
 chatsRouter.post("/:chatId/messages/text", userAuth, validateText, textPost);
 chatsRouter.post("/:chatId/messages/image", userAuth, imageUpload, imagePost);
 chatsRouter.patch("/:chatId/name", userAuth, validateChat, chatNamePatch);
+chatsRouter.patch("/:chatId/read", userAuth, chatReadPatch);
 
 export default chatsRouter;

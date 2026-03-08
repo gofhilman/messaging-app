@@ -70,11 +70,19 @@ async function chatPost(req: any, res: any) {
   if (!userIds.includes(req.user.id)) {
     userIds.push(req.user.id);
   }
+  const read = {
+    create: {
+      users: {
+        connect: { id: req.user.id },
+      },
+    },
+  };
   if (name) {
     chat = await prisma.chat.create({
       data: {
         name,
         type,
+        read,
         users: {
           connect: userIds.map((id: any) => ({ id })),
         },
@@ -89,6 +97,7 @@ async function chatPost(req: any, res: any) {
       update: {},
       create: {
         type,
+        read,
         users: {
           connect: userIds.map((id: any) => ({ id })),
         },
@@ -101,12 +110,13 @@ async function chatPost(req: any, res: any) {
 async function textPost(req: any, res: any) {
   const message = await prisma.message.create({
     data: {
+      chatId: req.params.chatId,
       type: "TEXT",
       text: req.body.text,
-      chatId: req.params.chatId,
       userId: req.user.id,
     },
   });
+  await updateChat(req.params.chatId, req.user.id);
   res.json({ message });
 }
 
@@ -116,12 +126,13 @@ async function imagePost(req: any, res: any) {
   });
   const message = await prisma.message.create({
     data: {
+      chatId: req.params.chatId,
       type: "IMAGE",
       image: file.secure_url,
-      chatId: req.params.chatId,
       userId: req.user.id,
     },
   });
+  await updateChat(req.params.chatId, req.user.id);
   res.json({ message });
 }
 
@@ -133,6 +144,38 @@ async function chatNamePatch(req: any, res: any) {
   res.json({ chat });
 }
 
+async function chatReadPatch(req: any, res: any) {
+  const chat = await prisma.chat.update({
+    where: { id: req.params.chatId },
+    data: {
+      read: {
+        update: {
+          users: {
+            connect: { id: req.user.id },
+          },
+        },
+      },
+    },
+  });
+  res.json({ chat });
+}
+
+async function updateChat(chatId: string, userId: string) {
+  await prisma.chat.update({
+    where: { id: chatId },
+    data: {
+      lastMessageAt: new Date(),
+      read: {
+        update: {
+          users: {
+            set: { id: userId },
+          },
+        },
+      },
+    },
+  });
+}
+
 export {
   chatsGet,
   globalChatGet,
@@ -141,4 +184,5 @@ export {
   textPost,
   imagePost,
   chatNamePatch,
+  chatReadPatch,
 };
