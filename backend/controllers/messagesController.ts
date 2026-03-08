@@ -10,6 +10,7 @@ async function textPost(req: any, res: any) {
       userId: req.user.id,
     },
   });
+  res.json({ message });
 }
 
 async function imagePost(req: any, res: any) {}
