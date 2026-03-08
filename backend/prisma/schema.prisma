@@ -18,7 +18,6 @@ model User {
   id       String    @id @default(uuid())
   username String    @unique
   password String
-  name     String
   picture  String    @default("https://res.cloudinary.com/dwyzndpyq/image/upload/v1772863199/customer-100_sld3om.png")
   online   Boolean   @default(false)
   chats    Chat[]

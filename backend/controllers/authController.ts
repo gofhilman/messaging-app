@@ -4,30 +4,27 @@ import jwt from "jsonwebtoken";
 import { AppError } from "../errors/AppError";
 
 function meGet(req: any, res: any) {
-  let username, name, picture;
+  let username, picture;
   if (req.user) {
-    ({ username, name, picture } = req.user);
+    ({ username, picture } = req.user);
   } else {
     username = "guest";
-    name = "Guest";
     picture =
       "https://res.cloudinary.com/dwyzndpyq/image/upload/v1772863199/customer-100_sld3om.png";
   }
-  res.json({ me: { username, name, picture } });
+  res.json({ me: { username, picture } });
 }
 
 async function signupPost(req: any, res: any) {
-  const { username, password, name } = req.body;
+  const { username, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
   const me = await prisma.user.create({
     data: {
       username,
-      name,
       password: hashedPassword,
     },
     select: {
       username: true,
-      name: true,
       picture: true,
     },
   });

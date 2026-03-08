@@ -20,7 +20,6 @@ passport.use(
         select: {
           id: true,
           username: true,
-          name: true,
           picture: true,
           online: true,
         },
