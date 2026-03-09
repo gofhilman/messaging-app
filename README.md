@@ -1,2 +1,3 @@
 # messaging-app
-A personal and group chat app
+
+A private, group, and global chat app
