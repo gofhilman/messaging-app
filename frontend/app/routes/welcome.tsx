@@ -52,7 +52,7 @@ export default function Welcome() {
     if (id) {
       loadingToast.current = null
       if (pictureFetcher.data.errors) {
-        toast.error("Failed to upload picture", { id })
+        toast.error("Failed to update picture", { id })
       } else {
         toast.success("Picture has been updated", { id })
       }
