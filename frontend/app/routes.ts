@@ -7,16 +7,16 @@ import {
 } from "@react-router/dev/routes"
 
 export default [
+  index("routes/home.tsx"),
   layout("layouts/main-layout.tsx", [
-    index("routes/home.tsx"),
     ...prefix("chats", [
       index("routes/chats.tsx"),
       route("global", "routes/chat-global.tsx"),
       route(":chatId", "routes/chat-specific.tsx"),
       route(":chatId/name", "routes/chat-name.tsx"),
       route(":chatId/read", "routes/chat-read.tsx"),
-      route(":chatId/messages/text", "routes/message-text"),
-      route(":chatId/messages/image", "routes/message-image"),
+      route(":chatId/messages/text", "routes/message-text.tsx"),
+      route(":chatId/messages/image", "routes/message-image.tsx"),
     ]),
     ...prefix("me", [
       index("routes/me.tsx"),
@@ -25,6 +25,7 @@ export default [
     ]),
     route("users", "routes/users.tsx"),
     route("users/:userId", "routes/user-specific.tsx"),
+    route("welcome", "routes/welcome.tsx"),
   ]),
   layout("layouts/auth-layout.tsx", [
     route("login", "routes/login.tsx"),

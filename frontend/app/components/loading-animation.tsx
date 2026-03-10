@@ -18,7 +18,7 @@ function TypingIndicator() {
         <motion.div
           key={i}
           variants={dotVariants}
-          className="size-8 shrink-0 rounded-full bg-muted-foreground opacity-50"
+          className="size-8 shrink-0 rounded-full bg-secondary opacity-50"
         />
       ))}
     </motion.div>
@@ -34,13 +34,13 @@ export default function LoadingAnimation() {
         transition={{ duration: 0.25 }}
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
       >
-        <div className="relative flex h-40 w-fit items-center justify-center rounded-[40px] bg-muted px-16 shadow-md">
+        <div className="relative flex h-40 w-fit items-center justify-center rounded-[40px] bg-primary px-16 shadow-md">
           <TypingIndicator />
           <svg
             width="30"
             height="36"
             viewBox="0 0 20 24"
-            className="absolute -bottom-8 left-8 fill-muted"
+            className="absolute -bottom-8 left-8 fill-primary"
           >
             <path d="M0 0 L0 24 L20 0 Z" />
           </svg>
