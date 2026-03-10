@@ -11,7 +11,6 @@ export default [
   layout("layouts/main-layout.tsx", [
     ...prefix("chats", [
       index("routes/chats.tsx"),
-      route("global", "routes/chat-global.tsx"),
       route(":chatId", "routes/chat-specific.tsx"),
       route(":chatId/name", "routes/chat-name.tsx"),
       route(":chatId/read", "routes/chat-read.tsx"),
@@ -26,6 +25,7 @@ export default [
     ]),
     route("users", "routes/users.tsx"),
     route("users/:userId", "routes/user-specific.tsx"),
+    route("global", "routes/chat-global.tsx"),
   ]),
   layout("layouts/auth-layout.tsx", [
     route("login", "routes/login.tsx"),

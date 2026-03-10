@@ -29,7 +29,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
   const user = Object.fromEntries(formData)
   try {
     await postLogin(user)
-    return redirect(`/chats/global?login=${user.toastId}`)
+    return redirect(`/global?login=${user.toastId}`)
   } catch (error: any) {
     const errors = await error.json()
     return data({ errors }, { status: error.status })
@@ -107,7 +107,7 @@ export default function Login({ actionData }: Route.ComponentProps) {
             </Button>
           </Link>
           <p>or</p>
-          <Link to="/chats/global" className="w-full" viewTransition>
+          <Link to="/global" className="w-full" viewTransition>
             <Button className="w-full">Log in as a guest</Button>
           </Link>
         </CardFooter>

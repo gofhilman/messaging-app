@@ -27,12 +27,11 @@ function TypingIndicator() {
 
 export default function LoadingAnimation() {
   return (
-    <div className="relative h-screen w-full">
+    <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
       <motion.div
         initial={{ opacity: 0, y: 8, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.25 }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
       >
         <div className="relative flex h-40 w-fit items-center justify-center rounded-[40px] bg-primary px-16 shadow-md">
           <TypingIndicator />

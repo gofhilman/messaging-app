@@ -11,7 +11,6 @@ import {
 } from "~/components/ui/card"
 import FormErrors from "~/components/form-errors"
 import { Field, FieldDescription, FieldLabel } from "~/components/ui/field"
-import { Input } from "~/components/ui/input"
 import { Button } from "~/components/ui/button"
 
 export default function Welcome() {
@@ -21,6 +20,7 @@ export default function Welcome() {
   const loadingToast = useRef<any>(null)
   const formRef = useRef<HTMLFormElement>(null)
   const [hasSubmitted, setHasSubmitted] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     meFetcher.load("/me")
@@ -62,7 +62,7 @@ export default function Welcome() {
   return (
     <main className="flex flex-col gap-10">
       <title>{`Welcome${username ? `, ${username}` : ""}! \u2014 SecreChat`}</title>
-      <Card className="mx-auto max-w-sm">
+      <Card className="max-w-sm">
         <CardHeader>
           <CardTitle>Welcome{username ? `, ${username}` : ""}!</CardTitle>
           <CardDescription>
@@ -70,7 +70,7 @@ export default function Welcome() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col items-center gap-5">
+          <div className="flex flex-col items-center gap-6">
             {picture && (
               <img
                 src={picture}
@@ -89,26 +89,26 @@ export default function Welcome() {
               }}
             >
               <FormErrors errors={pictureFetcher.data?.errors} />
-              <Field>
-                <FieldLabel htmlFor="image">Picture</FieldLabel>
-                <Input
-                  id="image"
-                  name="image"
-                  type="file"
-                  onChange={() => formRef.current?.requestSubmit()}
-                />
-                <FieldDescription>Select a picture to upload.</FieldDescription>
-              </Field>
+              <input
+                ref={inputRef}
+                name="image"
+                type="file"
+                className="hidden"
+                onChange={() => formRef.current?.requestSubmit()}
+              />
+              <Button type="button" onClick={() => inputRef.current?.click()}>
+                Select a picture to upload
+              </Button>
             </pictureFetcher.Form>
           </div>
         </CardContent>
         <CardFooter className="justify-between">
-          <Form action="/chats/global" viewTransition>
+          <Form action="/global" viewTransition>
             <Button disabled={!hasSubmitted} type="submit">
               Let's go!
             </Button>
           </Form>
-          <Link to="/chats/global" viewTransition>
+          <Link to="/global" viewTransition>
             <Button variant="outline">Skip</Button>
           </Link>
         </CardFooter>

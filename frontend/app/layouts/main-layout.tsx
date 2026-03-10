@@ -1,19 +1,16 @@
-import {
-  Earth,
-  MessageSquareMore,
-  MessagesSquare,
-  SquareUser,
-  Users,
-} from "lucide-react"
+import { MessageSquareMore } from "lucide-react"
 import { useRef } from "react"
-import { Form, Link, NavLink, Outlet, useSubmit } from "react-router"
+import { Form, Link, Outlet, useNavigation, useSubmit } from "react-router"
 import { toast } from "sonner"
+import LoadingAnimation from "~/components/loading-animation"
+import Navigation from "~/components/navigation"
 import { ThemeToggle } from "~/components/theme-toggle"
 import { Button } from "~/components/ui/button"
 
 export default function MainLayout() {
   const loadingToast = useRef<any>(null)
   const submit = useSubmit()
+  const navigation = useNavigation()
 
   return (
     <div className="mx-auto flex min-h-screen max-w-2xl flex-col gap-10 p-5">
@@ -46,31 +43,8 @@ export default function MainLayout() {
           </Button>
         </Form>
       </header>
-      <Outlet />
-      <nav className="fixed inset-x-0 bottom-0 z-10 border-t md:top-0 md:right-auto md:h-screen md:w-24 md:border-t-0 md:border-r">
-        <ul className="flex justify-around md:flex-col md:items-center md:gap-6 md:pt-24">
-          <li>
-            <NavLink to="/chats">
-              <MessagesSquare />
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/users">
-              <Users />
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/chats/global">
-              <Earth />
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/me">
-              <SquareUser />
-            </NavLink>
-          </li>
-        </ul>
-      </nav>
+      {navigation.state === "loading" ? <LoadingAnimation /> : <Outlet />}
+      <Navigation />
     </div>
   )
 }

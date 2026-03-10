@@ -28,6 +28,11 @@ const validateSignup: any = [
       "You're registering, darling. That means choosing a name that slaps, " +
         "sparkles, and screams main character energy. Don't ghost us!",
     )
+    .not()
+    .equals("guest")
+    .withMessage(
+      '"guest" is giving background character vibes, darling. Pick something that shines!',
+    )
     .custom(async (username) => {
       const user = await prisma.user.findUnique({
         where: { username },
