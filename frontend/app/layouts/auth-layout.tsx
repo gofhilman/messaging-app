@@ -5,7 +5,7 @@ import { ThemeToggle } from "~/components/theme-toggle"
 
 export default function AuthLayout() {
   return (
-    <div className="mx-auto flex min-h-screen max-w-2xl flex-col gap-10 px-5 py-12">
+    <div className="mx-auto flex min-h-screen max-w-2xl flex-col gap-10 p-5">
       <header className="flex items-center justify-between">
         <Link to="/" viewTransition>
           <div className="flex items-center gap-3">

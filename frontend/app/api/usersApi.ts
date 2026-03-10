@@ -20,7 +20,7 @@ async function patchMePicture(image: any) {
   const headers = jwtHeaders(new Headers())
   const body = new FormData()
   body.append("image", image)
-  const response = await fetchWithRetry(usersUrl + "/me/picture", {
+  const response = await fetchWithRetry(usersUrl + "me/picture", {
     method: "PATCH",
     headers,
     body,
@@ -31,7 +31,7 @@ async function patchMePicture(image: any) {
 
 async function patchMeOnline() {
   const headers = jwtHeaders(new Headers())
-  const response = await fetchWithRetry(usersUrl + "/me/online", {
+  const response = await fetchWithRetry(usersUrl + "me/online", {
     method: "PATCH",
     headers,
   })
