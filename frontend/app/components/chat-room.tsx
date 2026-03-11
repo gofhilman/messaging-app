@@ -4,6 +4,7 @@ import { formatRelative } from "date-fns"
 import { useFetcher } from "react-router"
 import { cn } from "~/lib/utils"
 import LoadingAnimation from "./loading-animation"
+import { Avatar, AvatarBadge, AvatarImage } from "./ui/avatar"
 
 export default function ChatRoom() {
   let myUsername: any, chatType: any, messages: any
@@ -60,11 +61,14 @@ export default function ChatRoom() {
                     )}
                   >
                     {["GROUP", "GLOBAL"].includes(chatType) && (
-                      <img
-                        src={user.picture}
-                        alt=""
-                        className="h-8 w-8 rounded-full object-cover ring-1 ring-border"
-                      />
+                      <Avatar>
+                        <AvatarImage src={user.picture} alt="" />
+                        <AvatarBadge
+                          className={
+                            user.online ? "bg-chart-2" : "bg-muted-foreground"
+                          }
+                        />
+                      </Avatar>
                     )}
                     <div
                       className={cn(
