@@ -2,8 +2,10 @@ import { useEffect, useRef } from "react"
 import { ScrollArea } from "./ui/scroll-area"
 import { formatRelative } from "date-fns"
 import { useFetcher } from "react-router"
+import { cn } from "~/lib/utils"
+import LoadingAnimation from "./loading-animation"
 
-export default function ChatRoom({ className }: any) {
+export default function ChatRoom() {
   let myUsername: any, chatType: any, messages: any
   const fetcher = useFetcher()
   const viewportRef = useRef<HTMLDivElement>(null)
@@ -14,7 +16,7 @@ export default function ChatRoom({ className }: any) {
     fetcher.load(".")
     const id = setInterval(() => {
       fetcher.load(".")
-    }, 60_000) // load for every minute
+    }, 3_000) // load for every 3 sec
     return () => clearInterval(id)
   }, [])
   useEffect(() => {
@@ -27,8 +29,9 @@ export default function ChatRoom({ className }: any) {
       top: viewport.scrollHeight,
       behavior: isFirstRender.current ? "instant" : "smooth",
     })
+    prevLastIdRef.current = lastId
     isFirstRender.current = false
-  }, [messages])
+  }, [fetcher.data])
   if (fetcher.data) {
     ;({
       me: { username: myUsername },
@@ -37,29 +40,68 @@ export default function ChatRoom({ className }: any) {
   }
 
   return (
-    <ScrollArea className={className} ref={viewportRef}>
-      <div className="flex flex-col-reverse p-3">
-        {messages?.map(({ id, createdAt, user, type, text, image }: any) => (
-          <div key={id}>
-            {["GROUP", "GLOBAL"].includes(chatType) && (
-              <img
-                src={user.picture}
-                alt=""
-                className="h-10 w-10 rounded-full object-cover ring-2 ring-border"
-              />
-            )}
-            <div>
-              {["GROUP", "GLOBAL"].includes(chatType) && <p>{user.username}</p>}
-              {type === "TEXT" ? <p>{text}</p> : <img src={image} alt="" />}
-              <p>
-                {((s) => s[0].toUpperCase() + s.slice(1))(
-                  formatRelative(createdAt, new Date())
-                )}
-              </p>
+    <>
+      {fetcher.data ? (
+        <div className="flex min-h-0 flex-col gap-5">
+          {chatType === "GLOBAL" && (
+            <h2 className="text-xl font-semibold">Global Chat</h2>
+          )}
+          <ScrollArea className="min-h-0 flex-1" ref={viewportRef}>
+            <div className="flex flex-col-reverse gap-2 p-3">
+              {messages?.map(
+                ({ id, createdAt, user, type, text, image }: any) => (
+                  <div
+                    key={id}
+                    className={cn(
+                      "gap-1",
+                      myUsername === user.username
+                        ? "flex flex-row-reverse"
+                        : "flex"
+                    )}
+                  >
+                    {["GROUP", "GLOBAL"].includes(chatType) && (
+                      <img
+                        src={user.picture}
+                        alt=""
+                        className="h-8 w-8 rounded-full object-cover ring-1 ring-border"
+                      />
+                    )}
+                    <div
+                      className={cn(
+                        "flex max-w-17/20 flex-col gap-1 rounded-lg p-1",
+                        myUsername === user.username
+                          ? "items-end rounded-tr-none bg-primary-alt"
+                          : "rounded-tl-none bg-secondary"
+                      )}
+                    >
+                      {["GROUP", "GLOBAL"].includes(chatType) && (
+                        <p className="text-sm font-semibold">{user.username}</p>
+                      )}
+                      {type === "TEXT" ? (
+                        <p>{text}</p>
+                      ) : (
+                        <img src={image} alt="" className="rounded-md" />
+                      )}
+                      <p
+                        className={cn(
+                          "text-xs",
+                          myUsername !== user.username ? "self-end" : ""
+                        )}
+                      >
+                        {((s) => s[0].toUpperCase() + s.slice(1))(
+                          formatRelative(createdAt, new Date())
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                )
+              )}
             </div>
-          </div>
-        ))}
-      </div>
-    </ScrollArea>
+          </ScrollArea>
+        </div>
+      ) : (
+        <LoadingAnimation />
+      )}
+    </>
   )
 }
