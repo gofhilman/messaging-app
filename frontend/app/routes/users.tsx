@@ -35,7 +35,7 @@ export default function Users({ loaderData }: Route.ComponentProps) {
   return (
     <main className="flex h-full min-h-0 flex-col gap-5">
       <title>People &mdash; SecreChat</title>
-      <CreateGroupDialog />
+      <CreateGroupDialog users={users} />
       <div className="px-4">
         <InputGroup>
           <InputGroupInput
