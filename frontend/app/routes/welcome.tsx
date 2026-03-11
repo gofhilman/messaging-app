@@ -10,7 +10,6 @@ import {
   CardTitle,
 } from "~/components/ui/card"
 import FormErrors from "~/components/form-errors"
-import { Field, FieldDescription, FieldLabel } from "~/components/ui/field"
 import { Button } from "~/components/ui/button"
 
 export default function Welcome() {

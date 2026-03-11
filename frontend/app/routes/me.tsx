@@ -30,7 +30,7 @@ export default function Me({ loaderData }: Route.ComponentProps) {
   }
 
   return (
-    <main className="flex flex-col items-center gap-8">
+    <main className="flex flex-col items-center gap-6">
       <title>Me &mdash; SecreChat</title>
       <h2 className="text-3xl font-bold">{me.username}</h2>
       <img
