@@ -25,7 +25,7 @@ async function specificUserGet(req: any, res: any) {
       online: true,
     },
     where: {
-      id: req.params.userId,
+      username: req.params.username,
     },
   });
   res.json({ user });
