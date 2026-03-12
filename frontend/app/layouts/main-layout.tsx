@@ -46,7 +46,7 @@ export default function MainLayout() {
       {navigation.state === "loading" ? (
         <LoadingAnimation />
       ) : (
-        <div className="flex-1 overflow-hidden pb-[85px] min-h-0">
+        <div className="min-h-0 flex-1 overflow-hidden pb-[85px] lg:pb-0">
           <Outlet />
         </div>
       )}

@@ -134,7 +134,7 @@ export default function ChatRoom() {
                     )}
                     <div
                       className={cn(
-                        "flex max-w-17/20 flex-col gap-1 rounded-lg p-2",
+                        "flex max-w-17/20 flex-col gap-1 rounded-lg p-1.5",
                         myUsername === user.username
                           ? "items-end rounded-tr-none bg-primary-alt"
                           : "rounded-tl-none bg-secondary"
