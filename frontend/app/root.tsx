@@ -1,10 +1,10 @@
 import {
   Links,
-  Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
   isRouteErrorResponse,
+  useFetcher,
 } from "react-router"
 
 import type { Route } from "./+types/root"
@@ -12,8 +12,14 @@ import "./app.css"
 import { ThemeProvider } from "./components/theme-provider"
 import LoadingAnimation from "./components/loading-animation"
 import { Toaster } from "./components/ui/sonner"
+import { getMe } from "./api/authApi"
+import { useEffect } from "react"
 
-export async function HydrateFallback() {
+export async function clientLoader() {
+  return await getMe()
+}
+
+export function HydrateFallback() {
   return <LoadingAnimation />
 }
 
@@ -37,7 +43,22 @@ export function Layout({ children }: { children: React.ReactNode }) {
   )
 }
 
-export default function App() {
+export default function App({ loaderData }: Route.ComponentProps) {
+  const { me } = loaderData
+  const fetcher = useFetcher()
+  const submitFetcher = () =>
+    fetcher.submit(null, {
+      action: "me/online",
+      method: "post",
+    })
+
+  useEffect(() => {
+    if (me.username === "guest") return
+    submitFetcher()
+    const id = setInterval(submitFetcher, 50_000) // load for every 50 sec
+    return () => clearInterval(id)
+  }, [me.username])
+
   return <Outlet />
 }
 

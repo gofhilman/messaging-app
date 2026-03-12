@@ -12,7 +12,6 @@ import {
   useComboboxAnchor,
 } from "./ui/combobox"
 import { Input } from "./ui/input"
-import { Item, ItemContent, ItemMedia, ItemTitle } from "./ui/item"
 import { Avatar, AvatarBadge, AvatarImage } from "./ui/avatar"
 
 export function ComboboxMultiple({ name, users }: any) {

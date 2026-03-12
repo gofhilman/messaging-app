@@ -69,6 +69,7 @@ export default function CreateGroupDialog({ users }: any) {
               <Label htmlFor="userIds">Members</Label>
               <ComboboxMultiple id="userIds" name="userIds" users={users} />
             </Field>
+            <Input type="hidden" name="type" value="GROUP" />
           </FieldGroup>
         </fetcher.Form>
         <DialogFooter>
