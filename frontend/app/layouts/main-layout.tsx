@@ -13,8 +13,8 @@ export default function MainLayout() {
   const navigation = useNavigation()
 
   return (
-    <div className="mx-auto flex h-screen max-w-2xl flex-col gap-5 p-5">
-      <header className="flex items-center gap-5">
+    <div className="mx-auto flex h-screen max-w-2xl flex-col gap-5">
+      <header className="flex items-center gap-5 px-5 pt-5">
         <Link to="/" viewTransition className="mr-auto">
           <div className="flex items-center gap-3">
             <MessageSquareMore
@@ -44,9 +44,12 @@ export default function MainLayout() {
         </Form>
       </header>
       {navigation.state === "loading" ? (
-        <LoadingAnimation />
+        <>
+          <LoadingAnimation />
+          <div className="flex-1" />
+        </>
       ) : (
-        <div className="min-h-0 flex-1 overflow-hidden pb-[85px] lg:pb-0">
+        <div className="min-h-0 flex-1 overflow-hidden px-5 pb-5">
           <Outlet />
         </div>
       )}

@@ -16,7 +16,7 @@ export default function ChatRoom() {
     chatType: any,
     messages: any,
     mainUser: any
-  const fetcher = useFetcher()
+  const fetcher = useFetcher({ key: "chat-room" })
   const readFetcher = useFetcher()
   const viewportRef = useRef<HTMLDivElement>(null)
   const prevLastIdRef = useRef(null)
