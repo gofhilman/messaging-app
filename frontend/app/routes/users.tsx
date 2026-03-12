@@ -19,6 +19,7 @@ import { Avatar, AvatarBadge, AvatarImage } from "~/components/ui/avatar"
 import { Button } from "~/components/ui/button"
 import { ScrollArea } from "~/components/ui/scroll-area"
 import { useState } from "react"
+import { Link } from "react-router"
 
 export async function clientLoader() {
   return await getUsers()
@@ -55,16 +56,20 @@ export default function Users({ loaderData }: Route.ComponentProps) {
         <ItemGroup className="px-4">
           {filteredUsers.map(({ id, username, picture, online }: any) => (
             <Item key={id} variant="outline">
-              <ItemMedia>
-                <Avatar>
-                  <AvatarImage src={picture} />
-                  <AvatarBadge
-                    className={online ? "bg-chart-2" : "bg-muted-foreground"}
-                  />
-                </Avatar>
-              </ItemMedia>
+              <Link to={"/users/" + username} viewTransition>
+                <ItemMedia>
+                  <Avatar>
+                    <AvatarImage src={picture} />
+                    <AvatarBadge
+                      className={online ? "bg-chart-2" : "bg-muted-foreground"}
+                    />
+                  </Avatar>
+                </ItemMedia>
+              </Link>
               <ItemContent className="gap-1">
-                <ItemTitle>{username}</ItemTitle>
+                <Link to={"/users/" + username} viewTransition>
+                  <ItemTitle>{username}</ItemTitle>
+                </Link>
               </ItemContent>
               <ItemActions>
                 <Button variant="ghost" size="icon" className="rounded-full">

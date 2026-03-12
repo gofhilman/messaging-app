@@ -1,4 +1,4 @@
-import { Form, useFetcher } from "react-router"
+import { useFetcher } from "react-router"
 import { Button } from "./ui/button"
 import {
   Dialog,
@@ -14,9 +14,21 @@ import { Field, FieldGroup } from "./ui/field"
 import { Label } from "./ui/label"
 import { Input } from "./ui/input"
 import { ComboboxMultiple } from "./combobox-multiple"
+import { useRef } from "react"
+import { toast } from "sonner"
+import FormErrors from "./form-errors"
 
 export default function CreateGroupDialog({ users }: any) {
   const fetcher = useFetcher()
+  const loadingToast = useRef<any>(null)
+
+  if (fetcher.data?.errors && fetcher.state === "idle") {
+    const id = loadingToast.current
+    if (id) {
+      loadingToast.current = null
+      toast.error("Failed to create group", { id })
+    }
+  }
 
   return (
     <Dialog>
@@ -38,7 +50,16 @@ export default function CreateGroupDialog({ users }: any) {
             Enter a group name and add members to get started.
           </DialogDescription>
         </DialogHeader>
-        <fetcher.Form>
+        <fetcher.Form
+          id="chats"
+          action="/chats"
+          method="post"
+          onSubmit={() => {
+            const id = toast.loading("Sending text...")
+            loadingToast.current = id
+          }}
+        >
+          <FormErrors errors={fetcher.data?.errors} />
           <FieldGroup>
             <Field>
               <Label htmlFor="name">Name</Label>
@@ -52,7 +73,9 @@ export default function CreateGroupDialog({ users }: any) {
         </fetcher.Form>
         <DialogFooter>
           <DialogClose render={<Button variant="outline">Cancel</Button>} />
-          <Button type="submit">Create group</Button>
+          <Button id="chats" type="submit">
+            Create group
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

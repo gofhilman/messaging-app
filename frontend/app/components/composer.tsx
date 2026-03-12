@@ -45,7 +45,7 @@ export default function Composer({ chatId }: any) {
   }
 
   return (
-    <div className="flex items-end gap-3">
+    <div className="flex items-end gap-2.5">
       <textFetcher.Form
         ref={textFormRef}
         id="text"

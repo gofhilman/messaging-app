@@ -24,7 +24,7 @@ export default [
       route("welcome", "routes/welcome.tsx"),
     ]),
     route("users", "routes/users.tsx"),
-    route("users/:userId", "routes/user-specific.tsx"),
+    route("users/:username", "routes/user-specific.tsx"),
     route("global", "routes/chat-global.tsx"),
   ]),
   layout("layouts/auth-layout.tsx", [

@@ -10,8 +10,8 @@ async function getUsers() {
   return await response.json()
 }
 
-async function getSpecificUser(userId: any) {
-  const response = await fetchWithRetry(usersUrl + userId)
+async function getSpecificUser(username: any) {
+  const response = await fetchWithRetry(usersUrl + username)
   if (!response.ok) await throwError(response)
   return await response.json()
 }

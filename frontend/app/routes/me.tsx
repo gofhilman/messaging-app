@@ -30,14 +30,14 @@ export default function Me({ loaderData }: Route.ComponentProps) {
   }
 
   return (
-    <main className="flex flex-col items-center gap-6">
+    <main className="flex h-full flex-col items-center justify-center gap-6">
       <title>Me &mdash; SecreChat</title>
-      <h2 className="text-3xl font-bold">{me.username}</h2>
       <img
         src={me.picture}
         alt="Profile picture"
         className="h-60 w-60 rounded-full object-cover ring-2 ring-border"
       />
+      <h2 className="text-3xl font-bold">{me.username}</h2>
       <fetcher.Form
         ref={formRef}
         encType="multipart/form-data"
