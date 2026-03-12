@@ -1,13 +1,19 @@
 import { useEffect, useRef } from "react"
 import { ScrollArea } from "./ui/scroll-area"
 import { formatRelative } from "date-fns"
-import { useFetcher } from "react-router"
+import { Link, useFetcher } from "react-router"
 import { cn } from "~/lib/utils"
 import LoadingAnimation from "./loading-animation"
 import { Avatar, AvatarBadge, AvatarImage } from "./ui/avatar"
+import { Item, ItemContent, ItemMedia, ItemTitle } from "./ui/item"
 
 export default function ChatRoom() {
-  let myUsername: any, chatType: any, messages: any
+  let myUsername: any,
+    name: any,
+    users: any,
+    chatType: any,
+    messages: any,
+    mainUser: any
   const fetcher = useFetcher()
   const viewportRef = useRef<HTMLDivElement>(null)
   const prevLastIdRef = useRef(null)
@@ -33,19 +39,51 @@ export default function ChatRoom() {
     prevLastIdRef.current = lastId
     isFirstRender.current = false
   }, [fetcher.data])
+
   if (fetcher.data) {
     ;({
       me: { username: myUsername },
-      chat: { messages, type: chatType },
+      chat: { name, users, messages, type: chatType },
     } = fetcher.data)
+    mainUser =
+      users?.length === 1
+        ? users[0]
+        : users.find(({ username }: any) => username !== myUsername)
   }
 
   return (
     <>
       {fetcher.data ? (
-        <div className="flex min-h-0 flex-col gap-5">
+        <div className="flex min-h-0 flex-1 flex-col gap-5">
           {chatType === "GLOBAL" && (
             <h2 className="text-xl font-semibold">Global Chat</h2>
+          )}
+          {chatType === "GROUP" && (
+            <h2 className="text-xl font-semibold">{name}</h2>
+          )}
+          {chatType === "PRIVATE" && (
+            <Item
+              className="p-0"
+              render={
+                <Link to={"/users/" + mainUser.username}>
+                  <ItemMedia>
+                    <Avatar size="lg">
+                      <AvatarImage src={mainUser.picture} />
+                      <AvatarBadge
+                        className={
+                          mainUser.online ? "bg-chart-2" : "bg-muted-foreground"
+                        }
+                      />
+                    </Avatar>
+                  </ItemMedia>
+                  <ItemContent className="gap-1">
+                    <ItemTitle className="text-xl">
+                      {mainUser.username}
+                    </ItemTitle>
+                  </ItemContent>
+                </Link>
+              }
+            />
           )}
           <ScrollArea className="min-h-0 flex-1" ref={viewportRef}>
             <div className="flex flex-col-reverse gap-2 p-3">
@@ -82,7 +120,7 @@ export default function ChatRoom() {
                         <p className="text-sm font-semibold">{user.username}</p>
                       )}
                       {type === "TEXT" ? (
-                        <p>{text}</p>
+                        <p className="wrap-anywhere">{text}</p>
                       ) : (
                         <img src={image} alt="" className="rounded-md" />
                       )}

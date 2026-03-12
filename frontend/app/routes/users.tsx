@@ -19,7 +19,8 @@ import { Avatar, AvatarBadge, AvatarImage } from "~/components/ui/avatar"
 import { Button } from "~/components/ui/button"
 import { ScrollArea } from "~/components/ui/scroll-area"
 import { useState } from "react"
-import { Link } from "react-router"
+import { Form, Link } from "react-router"
+import { Input } from "~/components/ui/input"
 
 export async function clientLoader() {
   return await getUsers()
@@ -53,28 +54,37 @@ export default function Users({ loaderData }: Route.ComponentProps) {
         </InputGroup>
       </div>
       <ScrollArea className="min-h-0 flex-1">
-        <ItemGroup className="px-4">
+        <ItemGroup className="gap-2 px-3">
           {filteredUsers.map(({ id, username, picture, online }: any) => (
             <Item key={id} variant="outline">
-              <Link to={"/users/" + username} viewTransition>
-                <ItemMedia>
+              <ItemMedia>
+                <Link to={"/users/" + username} viewTransition>
                   <Avatar>
                     <AvatarImage src={picture} />
                     <AvatarBadge
                       className={online ? "bg-chart-2" : "bg-muted-foreground"}
                     />
                   </Avatar>
-                </ItemMedia>
-              </Link>
+                </Link>
+              </ItemMedia>
               <ItemContent className="gap-1">
                 <Link to={"/users/" + username} viewTransition>
                   <ItemTitle>{username}</ItemTitle>
                 </Link>
               </ItemContent>
               <ItemActions>
-                <Button variant="ghost" size="icon" className="rounded-full">
-                  <MessagesSquare />
-                </Button>
+                <Form action="/chats" method="post">
+                  <Input type="hidden" name="type" value="PRIVATE" />
+                  <Input type="hidden" name="userIds" value={id} />
+                  <Button
+                    type="submit"
+                    variant="ghost"
+                    size="icon"
+                    className="rounded-full"
+                  >
+                    <MessagesSquare />
+                  </Button>
+                </Form>
               </ItemActions>
             </Item>
           ))}

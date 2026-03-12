@@ -5,7 +5,8 @@ import throwError from "./throwError"
 const chatsUrl = import.meta.env.VITE_API_ROOT_URL + "/chats/"
 
 async function getChats() {
-  const response = await fetchWithRetry(chatsUrl)
+  const headers = jwtHeaders(new Headers())
+  const response = await fetchWithRetry(chatsUrl, { headers })
   if (!response.ok) await throwError(response)
   return await response.json()
 }
@@ -17,7 +18,8 @@ async function getGlobalChat() {
 }
 
 async function getSpecificChat(chatId: any) {
-  const response = await fetchWithRetry(chatsUrl + chatId)
+  const headers = jwtHeaders(new Headers())
+  const response = await fetchWithRetry(chatsUrl + chatId, { headers })
   if (!response.ok) await throwError(response)
   return await response.json()
 }

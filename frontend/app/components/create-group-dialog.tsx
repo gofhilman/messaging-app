@@ -55,7 +55,7 @@ export default function CreateGroupDialog({ users }: any) {
           action="/chats"
           method="post"
           onSubmit={() => {
-            const id = toast.loading("Sending text...")
+            const id = toast.loading("Creating group...")
             loadingToast.current = id
           }}
         >
@@ -74,7 +74,7 @@ export default function CreateGroupDialog({ users }: any) {
         </fetcher.Form>
         <DialogFooter>
           <DialogClose render={<Button variant="outline">Cancel</Button>} />
-          <Button id="chats" type="submit">
+          <Button form="chats" type="submit">
             Create group
           </Button>
         </DialogFooter>

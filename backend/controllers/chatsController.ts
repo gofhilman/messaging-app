@@ -15,7 +15,11 @@ async function chatsGet(req: any, res: any) {
     orderBy: { lastMessageAt: "desc" },
     include: {
       users,
-      messages: true,
+      messages: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
       read: {
         include: {
           users,
