@@ -26,7 +26,7 @@ const navList = [
 
 export default function Navigation() {
   return (
-    <nav className="border-t bg-sidebar p-3 lg:top-0 lg:right-auto lg:h-screen lg:w-50 lg:border-t-0 lg:border-r lg:p-5">
+    <nav className="border-t bg-sidebar p-3 lg:top-0 lg:right-auto lg:h-dvh lg:w-50 lg:border-t-0 lg:border-r lg:p-5">
       <ul className="flex justify-around lg:flex-col lg:items-start lg:gap-6 lg:pt-24">
         {navList.map(({ name, uri, icon }, id) => (
           <li key={id}>
