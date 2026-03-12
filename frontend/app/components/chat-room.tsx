@@ -16,7 +16,7 @@ export default function ChatRoom() {
     chatType: any,
     messages: any,
     mainUser: any
-  const fetcher = useFetcher({ key: "chat-room" })
+  const fetcher = useFetcher()
   const readFetcher = useFetcher()
   const viewportRef = useRef<HTMLDivElement>(null)
   const prevLastIdRef = useRef(null)
@@ -168,7 +168,10 @@ export default function ChatRoom() {
           </ScrollArea>
         </div>
       ) : (
-        <LoadingAnimation />
+        <>
+          <LoadingAnimation />
+          <div className="flex-1" />
+        </>
       )}
     </>
   )

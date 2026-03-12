@@ -8,7 +8,6 @@ import FormErrors from "./form-errors"
 import { cn } from "~/lib/utils"
 
 export default function Composer({ chatId, myUsername }: any) {
-  const chatRoomFetcher = useFetcher({ key: "chat-room" })
   const textFetcher = useFetcher()
   const imageFetcher = useFetcher()
   const loadingToasts = useRef(new Map())
@@ -48,12 +47,7 @@ export default function Composer({ chatId, myUsername }: any) {
   }
 
   return (
-    <div
-      className={cn(
-        "flex items-end gap-2.5",
-        chatRoomFetcher.state !== "idle" ? "hidden" : ""
-      )}
-    >
+    <div className="flex items-end gap-2.5">
       <textFetcher.Form
         ref={textFormRef}
         id="text"
