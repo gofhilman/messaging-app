@@ -10,9 +10,9 @@ export default defineConfig({
   },
   datasource: {
     url:
-      process.env["DATABASE_URL"] ??
+      process.env["DIRECT_URL"] ??
       (() => {
-        throw new Error("DATABASE_URL missing");
+        throw new Error("DIRECT_URL missing");
       })(),
   },
 });
