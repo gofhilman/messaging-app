@@ -15,6 +15,7 @@ export async function clientLoader() {
 
 export default function ChatGlobal({ loaderData }: Route.ComponentProps) {
   const {
+    me,
     chat: { id },
   } = loaderData
   const [searchParams, setSearchParams] = useSearchParams()
@@ -31,7 +32,7 @@ export default function ChatGlobal({ loaderData }: Route.ComponentProps) {
     <main className="flex h-full min-h-0 flex-col gap-5">
       <title>Global Chat &mdash; SecreChat</title>
       <ChatRoom />
-      <Composer chatId={id} />
+      <Composer chatId={id} myUsername={me.username} />
     </main>
   )
 }

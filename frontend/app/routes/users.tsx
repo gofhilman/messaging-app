@@ -19,16 +19,20 @@ import { Avatar, AvatarBadge, AvatarImage } from "~/components/ui/avatar"
 import { Button } from "~/components/ui/button"
 import { ScrollArea } from "~/components/ui/scroll-area"
 import { useState } from "react"
-import { Form, Link } from "react-router"
+import { Form, Link, useNavigate } from "react-router"
 import { Input } from "~/components/ui/input"
+import { getMe } from "~/api/authApi"
 
 export async function clientLoader() {
-  return await getUsers()
+  const { users } = await getUsers()
+  const { me } = await getMe()
+  return { users, me }
 }
 
 export default function Users({ loaderData }: Route.ComponentProps) {
-  const { users } = loaderData
+  const { users, me } = loaderData
   const [search, setSearch] = useState("")
+  const navigate = useNavigate()
 
   const filteredUsers = users.filter(({ username }: any) =>
     username.toLowerCase().includes(search.toLowerCase())
@@ -37,7 +41,7 @@ export default function Users({ loaderData }: Route.ComponentProps) {
   return (
     <main className="flex h-full min-h-0 flex-col gap-5">
       <title>People &mdash; SecreChat</title>
-      <CreateGroupDialog users={users} />
+      <CreateGroupDialog users={users} myUsername={me.username} />
       <div className="px-4">
         <InputGroup>
           <InputGroupInput
@@ -81,6 +85,12 @@ export default function Users({ loaderData }: Route.ComponentProps) {
                     variant="ghost"
                     size="icon"
                     className="rounded-full"
+                    onClick={(event) => {
+                      if (me.username === "guest") {
+                        event.preventDefault()
+                        return navigate("/")
+                      }
+                    }}
                   >
                     <MessagesSquare />
                   </Button>

@@ -12,7 +12,6 @@ const validateLogin: any = [
         "who's knocking before we open the velvet rope.",
     ),
   body("password")
-    .trim()
     .notEmpty()
     .withMessage(
       "No password? This isn't a casual stroll, it's a secured entrance. " +
@@ -46,14 +45,12 @@ const validateSignup: any = [
       return true;
     }),
   body("password")
-    .trim()
     .notEmpty()
     .withMessage(
       "A new account without a password? That's like wearing heels with no attitude. " +
         "Lock it down, secure your sparkle, and strut into the system!",
     ),
   body("confirm-password")
-    .trim()
     .notEmpty()
     .withMessage(
       "Confirming your password is like checking your reflection before the runway, darling. " +

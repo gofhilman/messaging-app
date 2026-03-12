@@ -1,18 +1,23 @@
 import { getSpecificUser } from "~/api/usersApi"
 import type { Route } from "./+types/user-specific"
-import { Form } from "react-router"
+import { Form, useNavigate } from "react-router"
 import { Button } from "~/components/ui/button"
 import { Input } from "~/components/ui/input"
 import { MessagesSquare } from "lucide-react"
+import { getMe } from "~/api/authApi"
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  return await getSpecificUser(params.username)
+  const { user } = await getSpecificUser(params.username)
+  const { me } = await getMe()
+  return { user, me }
 }
 
 export default function UserSpecific({ loaderData }: Route.ComponentProps) {
   const {
     user: { id, username, picture, online },
+    me,
   } = loaderData
+  const navigate = useNavigate()
 
   return (
     <main className="flex h-full flex-col items-center justify-center gap-6">
@@ -31,7 +36,17 @@ export default function UserSpecific({ loaderData }: Route.ComponentProps) {
       <Form action="/chats" method="post">
         <Input type="hidden" name="type" value="PRIVATE" />
         <Input type="hidden" name="userIds" value={id} />
-        <Button type="submit" size="lg" className="text-lg">
+        <Button
+          type="submit"
+          size="lg"
+          className="text-lg"
+          onClick={(event) => {
+            if (me.username === "guest") {
+              event.preventDefault()
+              return navigate("/")
+            }
+          }}
+        >
           <MessagesSquare /> Chat
         </Button>
       </Form>

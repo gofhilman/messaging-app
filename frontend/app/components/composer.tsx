@@ -1,4 +1,4 @@
-import { useFetcher } from "react-router"
+import { useFetcher, useNavigate } from "react-router"
 import { Button } from "./ui/button"
 import { Textarea } from "./ui/textarea"
 import { Image, SendHorizonal } from "lucide-react"
@@ -6,13 +6,14 @@ import { useEffect, useRef } from "react"
 import { toast } from "sonner"
 import FormErrors from "./form-errors"
 
-export default function Composer({ chatId }: any) {
+export default function Composer({ chatId, myUsername }: any) {
   const textFetcher = useFetcher()
   const imageFetcher = useFetcher()
   const loadingToasts = useRef(new Map())
   const textFormRef = useRef<HTMLFormElement>(null)
   const imageformRef = useRef<HTMLFormElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (textFetcher.data && !textFetcher.data.errors) {
@@ -82,11 +83,27 @@ export default function Composer({ chatId }: any) {
           className="hidden"
           onChange={() => imageformRef.current?.requestSubmit()}
         />
-        <Button size="icon-lg" onClick={() => inputRef.current?.click()}>
+        <Button
+          size="icon-lg"
+          onClick={() => {
+            if (myUsername === "guest") return navigate("/")
+            inputRef.current?.click()
+          }}
+        >
           <Image />
         </Button>
       </imageFetcher.Form>
-      <Button size="icon-lg" type="submit" form="text">
+      <Button
+        size="icon-lg"
+        type="submit"
+        form="text"
+        onClick={(event) => {
+          if (myUsername === "guest") {
+            event.preventDefault()
+            return navigate("/")
+          }
+        }}
+      >
         <SendHorizonal />
       </Button>
     </div>

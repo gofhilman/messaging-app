@@ -1,4 +1,4 @@
-import { useFetcher } from "react-router"
+import { useFetcher, useNavigate } from "react-router"
 import { Button } from "./ui/button"
 import {
   Dialog,
@@ -18,9 +18,10 @@ import { useRef } from "react"
 import { toast } from "sonner"
 import FormErrors from "./form-errors"
 
-export default function CreateGroupDialog({ users }: any) {
+export default function CreateGroupDialog({ users, myUsername }: any) {
   const fetcher = useFetcher()
   const loadingToast = useRef<any>(null)
+  const navigate = useNavigate()
 
   if (fetcher.data?.errors && fetcher.state === "idle") {
     const id = loadingToast.current
@@ -38,6 +39,9 @@ export default function CreateGroupDialog({ users }: any) {
             variant="outline"
             size="lg"
             className="mx-4 self-start text-lg"
+            onClick={() => {
+              if (myUsername === "guest") return navigate("/")
+            }}
           >
             Create group
           </Button>
@@ -54,9 +58,13 @@ export default function CreateGroupDialog({ users }: any) {
           id="chats"
           action="/chats"
           method="post"
-          onSubmit={() => {
+          onSubmit={(event) => {
+            event.preventDefault()
             const id = toast.loading("Creating group...")
             loadingToast.current = id
+            const formData: any = new FormData(event.currentTarget)
+            formData.set("toastId", id)
+            fetcher.submit(formData, { action: "/chats", method: "post" })
           }}
         >
           <FormErrors errors={fetcher.data?.errors} />

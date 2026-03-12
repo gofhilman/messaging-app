@@ -22,7 +22,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
     const {
       chat: { id },
     } = await postChat(chat)
-    return redirect(`${id}?chat=${chat.toastId}`)
+    return chat.toastId ? redirect(`${id}?chat=${chat.toastId}`) : redirect(id)
   } catch (error: any) {
     const errors = await error.json()
     return data({ errors }, { status: error.status })
@@ -30,8 +30,9 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 }
 
 export async function clientLoader() {
-  const { chats } = await getChats()
   const { me } = await getMe()
+  if (me.username === "guest") return redirect("/")
+  const { chats } = await getChats()
   return { chats, me }
 }
 
@@ -41,7 +42,7 @@ export default function Chats({ loaderData }: Route.ComponentProps) {
     <main className="flex h-full min-h-0 flex-col gap-5">
       <title>Chats &mdash; SecreChat</title>
       <ScrollArea className="min-h-0 flex-1">
-        <ItemGroup className="gap-1 px-4">
+        <ItemGroup className="gap-1 px-3">
           {chats.map(
             ({ id, lastMessageAt, name, read, type, users, messages }: any) => {
               let user
@@ -57,7 +58,7 @@ export default function Chats({ loaderData }: Route.ComponentProps) {
               return (
                 <Item
                   key={id}
-                  className="p-2"
+                  className="px-0 py-2"
                   render={
                     <Link to={id} viewTransition>
                       {type === "PRIVATE" && (
@@ -76,7 +77,9 @@ export default function Chats({ loaderData }: Route.ComponentProps) {
                       )}
                       <ItemContent>
                         <ItemTitle>
-                          {type === "PRIVATE" ? user.username : name}
+                          {type === "PRIVATE"
+                            ? user.username
+                            : `Group: ${name}`}
                         </ItemTitle>
                         <ItemDescription className="line-clamp-1">
                           {messages[0].type === "TEXT"
@@ -85,14 +88,16 @@ export default function Chats({ loaderData }: Route.ComponentProps) {
                         </ItemDescription>
                       </ItemContent>
                       <ItemContent className="flex-none text-center">
-                        <ItemDescription>
-                          <p className="text-xs">
-                            {((s) => s[0].toUpperCase() + s.slice(1))(
-                              formatRelative(lastMessageAt, new Date())
-                            )}
-                          </p>
-                          <p>{!read && "New message"}</p>
-                        </ItemDescription>
+                        <p className="text-xs">
+                          {((s) => s[0].toUpperCase() + s.slice(1))(
+                            formatRelative(lastMessageAt, new Date())
+                          )}
+                        </p>
+                        <p className="text-chart-2">
+                          {!read.users.find(
+                            ({ username }: any) => username === me.username
+                          ) && "New message"}
+                        </p>
                       </ItemContent>
                     </Link>
                   }

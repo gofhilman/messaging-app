@@ -9,7 +9,11 @@ export default function AuthLayout() {
       <header className="flex items-center justify-between">
         <Link to="/" viewTransition>
           <div className="flex items-center gap-3">
-            <MessageSquareMore size={28} strokeWidth={3} color="var(--primary)" />
+            <MessageSquareMore
+              size={28}
+              strokeWidth={3}
+              color="var(--primary)"
+            />
             <h1 className="text-2xl font-extrabold">SecreChat</h1>
           </div>
         </Link>
@@ -22,7 +26,7 @@ export default function AuthLayout() {
         </p>
       </div>
       <Outlet />
-      <footer className="mt-auto">
+      <footer className="mt-auto text-center">
         <p>&copy; {format(new Date(), "y")} SecreChat. All right reserved.</p>
       </footer>
     </div>

@@ -1,6 +1,6 @@
 import { getMe } from "~/api/authApi"
 import type { Route } from "./+types/me"
-import { useFetcher } from "react-router"
+import { useFetcher, useNavigate } from "react-router"
 import { useRef } from "react"
 import { toast } from "sonner"
 import FormErrors from "~/components/form-errors"
@@ -16,6 +16,7 @@ export default function Me({ loaderData }: Route.ComponentProps) {
   const loadingToast = useRef<any>(null)
   const formRef = useRef<HTMLFormElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const navigate = useNavigate()
 
   if (fetcher.state === "idle") {
     const id = loadingToast.current
@@ -59,7 +60,10 @@ export default function Me({ loaderData }: Route.ComponentProps) {
         <Button
           type="button"
           size="lg"
-          onClick={() => inputRef.current?.click()}
+          onClick={() => {
+            if (me.username === "guest") return navigate("/")
+            inputRef.current?.click()
+          }}
           className="text-lg"
         >
           Update picture
