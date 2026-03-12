@@ -40,7 +40,7 @@ export default function ChatRoom() {
 
   useEffect(() => {
     recurringFetches()
-    const id = setInterval(recurringFetches, 3_000) // load for every 3 sec
+    const id = setInterval(recurringFetches, 5_000) // load for every 5 sec
     return () => clearInterval(id)
   }, [])
   useEffect(() => {

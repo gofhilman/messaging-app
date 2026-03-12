@@ -8,7 +8,7 @@ const connectionString = `${process.env.DATABASE_URL}`;
 
 const adapter = new PrismaNeon({
   connectionString,
-  connectionTimeoutMillis: 2_000,
+  connectionTimeoutMillis: 10_000,
 });
 // const adapter = new PrismaPg({
 //   connectionString,
