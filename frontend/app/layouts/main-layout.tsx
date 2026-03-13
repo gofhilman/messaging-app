@@ -1,5 +1,5 @@
 import { MessageSquareMore } from "lucide-react"
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { Form, Link, Outlet, useNavigation, useSubmit } from "react-router"
 import { toast } from "sonner"
 import LoadingAnimation from "~/components/loading-animation"
@@ -11,6 +11,11 @@ export default function MainLayout() {
   const loadingToast = useRef<any>(null)
   const submit = useSubmit()
   const navigation = useNavigation()
+
+  useEffect(() => {
+    document.body.classList.add("overflow-hidden")
+    return () => document.body.classList.remove("overflow-hidden")
+  }, [])
 
   return (
     <div className="mx-auto flex h-dvh max-w-2xl flex-col gap-5">
