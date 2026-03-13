@@ -10,7 +10,7 @@ export async function fetchWithRetry(url: any, options: any = {}) {
       return res
     },
     {
-      retries: 2,
+      retries: 3,
       onFailedAttempt: ({ attemptNumber, retriesLeft }) => {
         console.warn(
           `Attempt ${attemptNumber} failed. ${retriesLeft} retries left...`
