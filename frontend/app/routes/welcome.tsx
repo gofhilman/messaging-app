@@ -61,7 +61,7 @@ export default function Welcome() {
   return (
     <main className="flex flex-col gap-10">
       <title>{`Welcome${username ? `, ${username}` : ""}! \u2014 SecreChat`}</title>
-      <Card className="max-w-sm">
+      <Card>
         <CardHeader>
           <CardTitle>Welcome{username ? `, ${username}` : ""}!</CardTitle>
           <CardDescription>
