@@ -31,7 +31,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Links />
       </head>
-      <body className="overflow-hidden">
+      <body>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
           {children}
           <Toaster position="top-center" />
