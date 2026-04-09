@@ -55,7 +55,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
   useEffect(() => {
     if (me.username === "guest") return
     submitFetcher()
-    const id = setInterval(submitFetcher, 50_000) // load for every 50 sec
+    const id = setInterval(submitFetcher, 50_000) // submit for every 50 sec
     return () => clearInterval(id)
   }, [me.username])
 
